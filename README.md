@@ -14,6 +14,33 @@ key to press, waits for you, keeps score, and can play the tune first so you kno
 goes. It ships with 17 hand-checked songs and can look up **any** song with a free AI model.
 The tutor is available both in this desktop app and in the **browser version** (see below).
 
+## Quick start
+
+Two ways to play. The **browser version needs no build step** — the built page is already
+included in the repo (`web/dist/`), and MediaPipe loads from a CDN on first play.
+
+### 1. Browser (easiest — just Python)
+
+```powershell
+cd D:\air_piano
+.venv\Scripts\python.exe serve.py        # or python serve.py (venv not required here)
+```
+
+`serve.py` prints a `http://127.0.0.1:8000/` address and opens it. Click **Start camera &
+sound**, allow the camera, and play. This uses only the Python standard library, so you
+don't need the virtualenv for the browser version.
+
+### 2. Desktop app (needs the one-time setup)
+
+See **Setup** below for creating `.venv` and installing dependencies. Then:
+
+```powershell
+cd D:\air_piano
+.venv\Scripts\python.exe air_piano.py            # play
+.venv\Scripts\python.exe air_piano.py --learn     # start in tutor mode
+.venv\Scripts\python.exe air_piano.py --list-songs  # list songs
+```
+
 ## Setup (already done — for reference or a fresh machine)
 
 ```powershell
@@ -63,7 +90,7 @@ using the same 7.8 MB model.
 ```powershell
 cd D:\air_piano\web
 npm install
-npm run build
+npm run build   # only needed if you change the UI; the built page is committed
 cd ..
 .venv\Scripts\python.exe serve.py
 ```
@@ -369,7 +396,7 @@ The HUD shows `voices: N`, so you can watch 10 notes ring at the same time.
 | `web/` | the browser app: React 19 + Tailwind v4, built with Vite (`npm run dev` / `npm run build`) |
 | `web/src/` | `App.jsx`, `components/` (Header, Stage, Controls, SongList, TutorPanel, ui, Icons) and `lib/` (engine, audio, tracking, api) |
 | `web/piano-core.js` | the pure keyboard/tutor logic, shared with the desktop app and unit-tested |
-| `web/dist/` | the built page that `serve.py` serves (produced by `npm run build`) |
+| `web/dist/` | the built page that `serve.py` serves (committed to the repo so it runs without `npm build`) |
 | `.venv\models\hand_landmarker.task` | the hand-tracking model (downloaded on first run) |
 | `.cache/songs/` | lessons looked up with AI, cached so they load instantly next time |
 
