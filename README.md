@@ -1,4 +1,4 @@
-# 🎹 Bipbop
+# Bipbop
 
 Play a virtual piano floating in the air, using just your webcam and your fingertips.
 
@@ -6,7 +6,7 @@ The webcam feed is shown **mirrored** with two octaves of piano keys drawn over 
 The keyboard sits in the **centre** of the frame by default (right where your hands
 naturally are) and is drawn semi-transparently, so you can always see your fingertips
 landing on it. Press **`p`** at any time to move it to the top or bottom.
-MediaPipe hand tracking follows all **10 of your fingertips** in real time — when a fingertip
+MediaPipe hand tracking follows all **10 of your fingertips** in real time - when a fingertip
 enters a key, the note plays instantly (a piano tone synthesized live, no sound samples needed).
 
 There is also a **tutor** that teaches you real songs note by note: it highlights the next
@@ -16,10 +16,10 @@ The tutor is available both in this desktop app and in the **browser version** (
 
 ## Quick start
 
-Two ways to play. The **browser version needs no build step** — the built page is already
+Two ways to play. The **browser version needs no build step** - the built page is already
 included in the repo (`web/dist/`), and MediaPipe loads from a CDN on first play.
 
-### 1. Browser (easiest — just Python)
+### 1. Browser (easiest - just Python)
 
 ```powershell
 cd D:\air_piano
@@ -41,7 +41,7 @@ cd D:\air_piano
 .venv\Scripts\python.exe air_piano.py --list-songs  # list songs
 ```
 
-## Setup (already done — for reference or a fresh machine)
+## Setup (already done - for reference or a fresh machine)
 
 ```powershell
 cd D:\air_piano
@@ -67,7 +67,7 @@ Options:
 | `--camera 1` | use a different camera (e.g. an external webcam) |
 | `--octaves 3` | show 3 octaves instead of 2 |
 | `--position top` | where the keyboard sits: `center` (default), `top`, `bottom` |
-| `--width 1280 --height 720` | ask the camera for a bigger picture — bigger keys, easier to hit |
+| `--width 1280 --height 720` | ask the camera for a bigger picture - bigger keys, easier to hit |
 | `--list-audio` | list audio devices and exit |
 | `--audio-device "USB"` | pick an output device by index or name |
 | `--blocksize 128` | smaller audio buffer, even lower latency |
@@ -77,7 +77,7 @@ Options:
 | `--list-songs` | list the built-in songs and exit |
 
 On startup the app also prints a one-line camera report (resolution, measured frame
-rate) and warns you if the picture is too dark or the camera is too slow — those are
+rate) and warns you if the picture is too dark or the camera is too slow - those are
 the two things that most often make tracking feel laggy.
 
 ## Play in your browser (React + Tailwind)
@@ -97,7 +97,7 @@ cd ..
 
 It prints a `http://127.0.0.1:8000/` address and opens it. Click **Start camera & sound**,
 allow the camera, and play. `serve.py` uses only the Python standard library, so any
-Python works — you don't need the virtualenv.
+Python works - you don't need the virtualenv.
 
 Why a little server instead of just opening the file? Browsers only allow camera access
 on `http(s)://` or `localhost`, and the server also keeps any AI key off the page (see
@@ -135,15 +135,15 @@ The look is a warm, retro-editorial "scrapbook" system, defined once in
   `#A5E9D8`, lavender `#C9B7F4`, bright `#F9EF46`, muted `#77756F`, mist `#E6E3DB`.
 - **Type**: Space Grotesk for headings, Inter for body (loaded from Google Fonts
   in `index.html`).
-- **Primitives**: `Card`, `Button`, `Badge`, `Sticker`, `SectionLabel`, `Stat` —
+- **Primitives**: `Card`, `Button`, `Badge`, `Sticker`, `SectionLabel`, `Stat` -
   thick ink outlines, rounded corners, restrained print shadows, pastel accents.
 - **Interaction**: the `.lift` class (hover lift + hard shadow) and one consistent
   focus ring, both disabled under `prefers-reduced-motion` / for keyboard users.
 
 To retune the whole app, change the tokens in `index.css`; per-component styles
-are plain Tailwind utility classes in the `.jsx` files — no separate stylesheet.
+are plain Tailwind utility classes in the `.jsx` files - no separate stylesheet.
 
-No webcam, or a browser that won't cooperate? **Click or tap the keys** — the browser
+No webcam, or a browser that won't cooperate? **Click or tap the keys** - the browser
 version also plays with a mouse or touchscreen, so you can try songs and the tutor without
 a camera at all. It also degrades gracefully: if the CDN is unreachable it tells you, and
 you can still play with the mouse.
@@ -151,7 +151,7 @@ you can still play with the mouse.
 ### Playing with the computer keyboard
 
 Prefer typing? Every key on the piano also answers to the computer keyboard, in the
-usual two-row layout — left hand on the bottom row, right hand on the home row:
+usual two-row layout - left hand on the bottom row, right hand on the home row:
 
 ```
   Z X C V B N M     C4  D4  E4  F4  G4  A4  B4
@@ -162,10 +162,10 @@ usual two-row layout — left hand on the bottom row, right hand on the home row
 
 Each mapped letter is printed on its key on screen, so the mapping is always visible.
 Keyboard presses play through the same path as fingertips and the mouse, so they count
-for the tutor (including chords — hold several keys at once as you would several fingers).
+for the tutor (including chords - hold several keys at once as you would several fingers).
 Typing in a text field never plays a note. Turn the input off with the **Computer keys**
 switch in Controls (the letters then disappear from the keys). The mapping in
-`web/src/lib/engine.js` covers the full two octaves the piano draws (C4–C6).
+`web/src/lib/engine.js` covers the full two octaves the piano draws (C4-C6).
 
 ### Performance (tuned for both fast and slow machines)
 
@@ -200,7 +200,7 @@ you to actually play them, keeps score, and can demonstrate the song first.
 
 **In the browser:** pick a song from the **Song library** and press **Practice**. Press **Listen**
 to hear it first. The next key is highlighted in gold on the keyboard and named in words
-(for example `C#4 — black key · left half`). Wrong notes flash red and are counted.
+(for example `C#4 - black key · left half`). Wrong notes flash red and are counted.
 **In the desktop app:** press **`l`** to enter Learn mode, **`d`** to hear the song, then
 play along with the pulsing gold marker.
 
@@ -210,8 +210,8 @@ launched it from) and press Enter, or start with `--song "Let It Be"`.
 
 ### Built-in songs
 
-17 hand-verified, public-domain tunes and exercises — all playable on the two-octave
-keyboard (C4–C6). See them with:
+17 hand-verified, public-domain tunes and exercises - all playable on the two-octave
+keyboard (C4-C6). See them with:
 
 ```powershell
 .venv\Scripts\python.exe air_piano.py --list-songs
@@ -249,7 +249,7 @@ $env:GEMINI_API_KEY = "your-key-here"
 learn it, so you can judge it. Melodies come from the model's own knowledge, and **small
 local models regularly get a song wrong** (they may invent a plausible-sounding scale
 instead of the real tune). Free cloud models are much more reliable. If a melody is wrong,
-press the ↻ button in the browser (or re-run the lookup) to try again — answers are cached
+press the refresh button in the browser (or re-run the lookup) to try again - answers are cached
 in `.cache/songs/`. Hand-checked built-in songs are always exact.
 
 Useful environment variables: `AIR_PIANO_LLM=off` disables lookup entirely (built-in songs
@@ -273,17 +273,17 @@ model takes tens of milliseconds per frame on a laptop CPU (watch the HUD's `tra
 and the camera's own frame rate adds to that. So for the snappiest playing:
 
 - keep the room **well lit** (a dark image makes the camera stretch its exposure and
-  drop its frame rate — the app warns you about this on startup);
+  drop its frame rate - the app warns you about this on startup);
 - close other apps that are using the camera;
 - if the window feels small, ask for a bigger picture with `--width 1280 --height 720`
   so the keys are wider and easier to aim at.
 
 Everything is synthesized on the fly, so there is no sample loading or file playback
-delay — notes start the moment a fingertip enters a key.
+delay - notes start the moment a fingertip enters a key.
 
 **Note on `--shared`:** the default WASAPI-exclusive mode takes over the sound
 device, so other apps (music, video) go silent while the piano runs. Add
-`--shared` if you'd rather keep other audio playing — it costs ~2-10 ms.
+`--shared` if you'd rather keep other audio playing - it costs ~2-10 ms.
 
 
 ## Controls
@@ -323,8 +323,8 @@ Press `p` to cycle between them live and keep whichever feels best; start with
 ## Tips for best results
 
 - Sit facing a **well-lit** room; avoid strong backlight (window behind you).
-- Hold your hands about **30–60 cm** from the camera, palms facing it.
-- Small, quick finger taps feel most like a real piano — and they also play
+- Hold your hands about **30-60 cm** from the camera, palms facing it.
+- Small, quick finger taps feel most like a real piano - and they also play
   **louder** (the app turns fingertip speed into strike strength, so gentle
   drifts stay soft and quick taps ring out).
 - All 10 fingers work independently, including the **black keys**, so you can
@@ -352,38 +352,38 @@ The HUD shows `voices: N`, so you can watch 10 notes ring at the same time.
 
 ## Troubleshooting
 
-- **No window / camera error** — try `python air_piano.py --camera 1`.
-- **Other apps lost their sound** — the app uses WASAPI exclusive mode. Run with
+- **No window / camera error** - try `python air_piano.py --camera 1`.
+- **Other apps lost their sound** - the app uses WASAPI exclusive mode. Run with
   `--shared` to let other apps play audio too.
-- **Sound lags behind your fingers** — run `--list-audio` and pick a device with a
+- **Sound lags behind your fingers** - run `--list-audio` and pick a device with a
   WASAPI or WDM-KS entry, or lower `--blocksize 128`. Check the HUD's `audio X ms`.
-- **Choppy tracking** — the HUD shows `track X ms` and FPS. Close other apps using
+- **Choppy tracking** - the HUD shows `track X ms` and FPS. Close other apps using
   the camera, and avoid dim lighting (long camera exposure adds lag). The startup
   report names the culprit if your picture is too dark or your camera too slow.
-- **The window is tiny / keys hard to hit** — run with `--width 1280 --height 720`
+- **The window is tiny / keys hard to hit** - run with `--width 1280 --height 720`
   (or try `--camera 1`) to get a bigger picture and wider keys.
-- **A key won't sound** — make sure your fingertip is clearly inside the key, then
+- **A key won't sound** - make sure your fingertip is clearly inside the key, then
   lift it off and tap again. Notes deliberately don't repeat until you leave the key.
-- **No sound** — check your volume, and look at the HUD: it shows which audio backend
+- **No sound** - check your volume, and look at the HUD: it shows which audio backend
   is active (`sounddevice`, or `winsound` fallback on Windows).
-- **Browser page: camera won't start** — allow camera access when prompted, make sure
+- **Browser page: camera won't start** - allow camera access when prompted, make sure
   you opened the `http://127.0.0.1:.../` address `serve.py` printed (not the file
   directly), and that no other program is holding the camera. Clicking the on-screen
   keys still works without a camera.
-- **Browser page: nothing happens / it says it can't load** — the hand-tracking code
+- **Browser page: nothing happens / it says it can't load** - the hand-tracking code
   comes from a CDN, so the first load needs internet. Check the browser console (F12).
   You can still play with the mouse.
-- **A looked-up song sounds wrong** — the AI guessed it, and small local models often
-  do. Press ↻ to ask again (a different answer is often better), or set a free
+- **A looked-up song sounds wrong** - the AI guessed it, and small local models often
+  do. Press refresh to ask again (a different answer is often better), or set a free
   `GEMINI_API_KEY`/`GROQ_API_KEY` for reliable recall. Built-in songs are hand-checked
   and always correct. `AIR_PIANO_LLM=off` disables lookup entirely.
-- **A lookup seems to hang** — a local model can take a minute or more per song; the
+- **A lookup seems to hang** - a local model can take a minute or more per song; the
   cap is `AIR_PIANO_LLM_TIMEOUT` seconds (default 180). Answers are cached in
   `.cache/songs/`, so the second time is instant.
-- **Restart the tutor song** — `r` in the desktop app, or pick the song again in the
+- **Restart the tutor song** - `r` in the desktop app, or pick the song again in the
   browser.
-- **Reinstall from scratch** — delete `.venv` and re-run the setup steps above. To
-  remove every trace, also delete `.cache\` (cached AI songs) — nothing else is written
+- **Reinstall from scratch** - delete `.venv` and re-run the setup steps above. To
+  remove every trace, also delete `.cache\` (cached AI songs) - nothing else is written
   outside the project folder.
 
 ## How it's put together
@@ -405,7 +405,7 @@ teach exactly the same songs from the same lessons.
 
 ## Tests
 
-There is a small test suite in `tests/` (no camera, audio device or internet needed — the
+There is a small test suite in `tests/` (no camera, audio device or internet needed - the
 tests never call an AI model):
 
 ```powershell
@@ -415,3 +415,10 @@ tests never call an AI model):
 It checks the song library and lookup, the shared keyboard/tutor logic the browser uses,
 the desktop Learn mode, and it runs the desktop app's real frame loop with a stubbed camera.
 `node tests/test_core.mjs` runs just the browser-logic tests.
+
+## Credits
+
+The key-signature graphic used as the decorative hero backdrop comes from
+[B-flat-major g-minor.svg](https://commons.wikimedia.org/wiki/File:B-flat-major_g_minor.svg)
+by [Rettinghaus](https://commons.wikimedia.org/wiki/User:Rettinghaus), via Wikimedia Commons,
+licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).

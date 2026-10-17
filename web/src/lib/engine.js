@@ -1,5 +1,5 @@
 /* ==========================================================================
-   BipbopEngine — the imperative heart of the page.
+   BipbopEngine - the imperative heart of the page.
 
    React owns the *chrome* (buttons, panels, tutor text); this class owns the
    things that must run every animation frame: the camera, the hand tracker,
@@ -21,7 +21,7 @@ const nowSec = () => performance.now() / 1000;
 
 /* ---------------------------------------------------------------- tuning --
    Two profiles, one per inference backend, selected automatically at start.
-   The choice is never shown in the UI — it only decides how large the camera
+   The choice is never shown in the UI - it only decides how large the camera
    frames are and how often the model runs.
 
    Both aim at the same thing: keep the main thread free enough that the picture
@@ -31,7 +31,7 @@ const nowSec = () => performance.now() / 1000;
    - `duty`   the share of the thread the model may occupy; the pause after
               each run scales with how long that run took
    - `min`/`max` bounds on the time between runs
-   - `camW/camH` capture size — MediaPipe resizes to its own model input
+   - `camW/camH` capture size - MediaPipe resizes to its own model input
               regardless, so a smaller frame costs nothing in accuracy */
 const PROFILES = {
   gpu: { camW: 640, camH: 480, duty: 0.85, min: 16, max: 120 },
@@ -58,7 +58,7 @@ const KEY_FOR_NOTE = Object.fromEntries(
   Object.entries(KEY_MAP).map(([key, note]) => [note, key.toUpperCase()]),
 );
 
-/* Typing in a text field (e.g. the song search) must never play notes — but a
+/* Typing in a text field (e.g. the song search) must never play notes - but a
    focused slider or button must not block the piano, so only text entry counts. */
 const TEXT_INPUT_TYPES = new Set([
   "text", "search", "email", "url", "tel", "password", "number",
@@ -170,7 +170,7 @@ export class BipbopEngine {
     } catch (err) {
       this.cameraOK = false;
       this.onNotice(
-        `Camera not available (${err.message}) — click the on-screen keys to play.`,
+        `Camera not available (${err.message}) - click the on-screen keys to play.`,
       );
     }
   }
@@ -180,7 +180,7 @@ export class BipbopEngine {
       const { landmarker, delegate } = await loadHandLandmarker();
       this.landmarker = landmarker;
       // The loader can only ever downgrade (never upgrade), so on a downgrade
-      // shrink the capture with it. Still internal — never shown.
+      // shrink the capture with it. Still internal - never shown.
       if (delegate === "cpu" && this.backend !== "cpu") {
         this.backend = "cpu";
         this.profile = PROFILES.cpu;
@@ -188,7 +188,7 @@ export class BipbopEngine {
         this.camH = this.profile.camH;
       }
     } catch (err) {
-      this.onNotice(err.message || "Hand tracking could not load — click the keys to play.");
+      this.onNotice(err.message || "Hand tracking could not load - click the keys to play.");
     }
   }
 
@@ -266,7 +266,7 @@ export class BipbopEngine {
 
   /* The keys are mostly static, so paint them once into an offscreen layer and
      blit that each frame. Only the handful of keys that light up and the hand
-     dots are redrawn per frame — noticeably less canvas work on a slow
+     dots are redrawn per frame - noticeably less canvas work on a slow
      machine, and the result looks identical. */
   buildLayer() {
     const canvas = this.canvas;
@@ -314,7 +314,7 @@ export class BipbopEngine {
 
   /* ---------------------------------------------------------------- input */
 
-  /* Every press — from a fingertip, the mouse, or the computer keyboard — goes
+  /* Every press - from a fingertip, the mouse, or the computer keyboard - goes
      through here, so each one lights the key and reaches the tutor. */
   pressCb = (key, velocity) => {
     key.highlight = nowSec();
@@ -517,7 +517,7 @@ export class BipbopEngine {
      synchronous and can take tens of milliseconds; if it shared a loop with
      painting, the whole picture would stutter at the model's rate. Here the
      video keeps repainting at the display rate while hand inference runs on
-     its own paced timer — so input stays responsive and the picture stays
+     its own paced timer - so input stays responsive and the picture stays
      smooth even when the model is slow. */
 
   paintLoop = () => {

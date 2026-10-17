@@ -3,15 +3,22 @@
    React only decides whether the "start" overlay is showing and whether hands
    are currently being seen; the canvas and video elements are driven
    imperatively by BipbopEngine. Nothing here reflects the machine's
-   capabilities — the status badge is purely about your hands. */
+   capabilities - the status badge is purely about your hands. */
 
 import { Camera } from "./Icons";
 import { Button, Card, SectionLabel, Sticker } from "./ui";
 
 function Status({ started, handsOn }) {
   if (!started) return <Sticker tone="mist">idle</Sticker>;
-  if (handsOn) return <Sticker tone="mint" rotate={-3}>✋ hands in view</Sticker>;
-  return <Sticker tone="coral" rotate={-3}>● live</Sticker>;
+  if (handsOn) return <Sticker tone="mint" rotate={-3}>hands in view</Sticker>;
+  return (
+    <Sticker tone="coral" rotate={-3}>
+      <span className="inline-flex items-center gap-1 align-middle">
+        <span className="h-2 w-2 rounded-full bg-ink" aria-hidden="true" />
+        live
+      </span>
+    </Sticker>
+  );
 }
 
 export default function Stage({ canvasRef, videoRef, started, notice, onStart, handsOn }) {
@@ -24,7 +31,7 @@ export default function Stage({ canvasRef, videoRef, started, notice, onStart, h
         </span>
       </div>
 
-      <div className="relative aspect-video w-full overflow-hidden rounded-xl ink-border bg-ink">
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl ink-border bg-ink">
         {/* the camera feed is drawn mirrored onto the canvas, so hide the element */}
         <video
           ref={videoRef}
@@ -67,7 +74,7 @@ export default function Stage({ canvasRef, videoRef, started, notice, onStart, h
 
       {started && (
         <p className="mt-3 text-xs text-muted">
-          Hold your hands up and touch the keys with your fingertips — or click them.
+          Hold your hands up and touch the keys with your fingertips - or click them.
         </p>
       )}
     </Card>

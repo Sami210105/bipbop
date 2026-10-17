@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Bipbop — browser edition (React + Tailwind)
+   Bipbop - browser edition (React + Tailwind)
 
    React owns the visible chrome and the tutor; BipbopEngine owns the 60 fps
    canvas/camera/tracking loop. The two meet at a handful of callbacks, so the
@@ -15,12 +15,12 @@ import Stage from "./components/Stage.jsx";
 import Controls from "./components/Controls.jsx";
 import SongList from "./components/SongList.jsx";
 import TutorPanel from "./components/TutorPanel.jsx";
-import { Camera, GraduationCap, Hand } from "./components/Icons.jsx";
+import { Camera, GraduationCap, HandPoint, KeySignature } from "./components/Icons.jsx";
 import { Button, Card, SectionLabel, Stat } from "./components/ui.jsx";
 
 const TIPS = [
   "Sit facing a well-lit room; avoid strong backlight behind you.",
-  "Hold your hands about 30–60 cm from the camera, palms toward it.",
+  "Hold your hands about 30-60 cm from the camera, palms toward it.",
   "Quick finger taps play louder; gentle drifts stay soft.",
   "All ten fingers work independently, black keys included.",
   "No webcam? Click or tap the keys with the mouse.",
@@ -31,12 +31,12 @@ const TIPS = [
 /* The computer-keyboard mapping, mirrored on the on-screen keys. Two octaves,
    left hand on the bottom row, right hand on the home row. */
 const KEYBOARD_LEGEND = [
-  ["Z", "C4"], ["S", "C♯4"], ["X", "D4"], ["D", "D♯4"], ["C", "E4"],
-  ["V", "F4"], ["G", "F♯4"], ["B", "G4"], ["H", "G♯4"], ["N", "A4"],
-  ["J", "A♯4"], ["M", "B4"],
-  ["Q", "C5"], ["2", "C♯5"], ["W", "D5"], ["3", "D♯5"], ["E", "E5"],
-  ["R", "F5"], ["5", "F♯5"], ["T", "G5"], ["6", "G♯5"], ["Y", "A5"],
-  ["7", "A♯5"], ["U", "B5"], ["I", "C6"],
+  ["Z", "C4"], ["S", "C#4"], ["X", "D4"], ["D", "D#4"], ["C", "E4"],
+  ["V", "F4"], ["G", "F#4"], ["B", "G4"], ["H", "G#4"], ["N", "A4"],
+  ["J", "A#4"], ["M", "B4"],
+  ["Q", "C5"], ["2", "C#5"], ["W", "D5"], ["3", "D#5"], ["E", "E5"],
+  ["R", "F5"], ["5", "F#5"], ["T", "G5"], ["6", "G#5"], ["Y", "A5"],
+  ["7", "A#5"], ["U", "B5"], ["I", "C6"],
 ];
 
 export default function App() {
@@ -82,12 +82,12 @@ export default function App() {
         if (ev.type === "wrong") {
           setWrongTick((t) => t + 1);
           setMessage({
-            text: `That was ${ev.pressed} — play ${ev.expected.join(" + ")}`,
+            text: `That was ${ev.pressed} - play ${ev.expected.join(" + ")}`,
             kind: "error",
           });
         } else if (ev.type === "complete") {
           setScore({ total: ev.total, misses: ev.misses, accuracy: ev.accuracy });
-          setMessage({ text: "Song complete! 🎉", kind: "ok" });
+          setMessage({ text: "Song complete! Well done.", kind: "ok" });
         }
         applyGuide();
         setVersion((v) => v + 1);
@@ -204,7 +204,7 @@ export default function App() {
   const practice = () => {
     if (tutorRef.current.startPractice()) {
       setScore(null);
-      setMessage({ text: "Practice started — play the highlighted keys.", kind: "ok" });
+      setMessage({ text: "Practice started - play the highlighted keys.", kind: "ok" });
       applyGuide();
       setVersion((v) => v + 1);
     }
@@ -268,11 +268,12 @@ export default function App() {
       {/* ------------------------------------------------------- hero */}
       <section id="top" className="mx-auto max-w-6xl scroll-mt-24 px-4 pt-6">
         <div className="hard-shadow relative overflow-hidden rounded-2xl bg-cobalt px-6 py-8 text-card ink-border sm:px-9 sm:py-10">
+
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-            <div className="absolute -right-12 -top-14 h-48 w-48 rounded-full border-2 border-card/25" />
-            <div className="absolute right-24 top-12 hidden h-16 w-16 rotate-12 rounded-2xl border-2 border-card/25 bg-card/5 sm:block" />
+            <KeySignature className="absolute right-20 top-2 h-68 w-auto text-card/25" />
+            {/* the keyboard strip along the bottom */}
             <div className="absolute bottom-0 right-8 hidden items-end gap-1.5 sm:flex">
-              {[0, 1, 2, 3, 4, 5].map((i) => (
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => (
                 <span
                   key={i}
                   className={`h-16 w-5 rounded-t-md border-2 border-line ${
@@ -285,23 +286,21 @@ export default function App() {
 
           <div className="relative max-w-2xl">
             <h1 className="font-display text-4xl font-bold uppercase leading-[0.92] tracking-tight sm:text-5xl">
-              Play piano in the air
+              Who needs a piano?
             </h1>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-card/85 sm:text-base">
-              Your webcam watches ten fingertips. Two octaves of keys float in front of you and
-              every touch plays a real note, synthesized live — then let the tutor walk you
-              through a song, one key at a time.
+              Turn the space in front of your webcam into a virtual piano. Play notes with simple finger gestures, experiment with melodies, and learn your favorite songs one note at a time.
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
               <Button variant="bright" size="lg" onClick={start} icon={<Camera className="h-4 w-4" />}>
-                Start camera &amp; sound
+                Start playing!
               </Button>
               <Button variant="outline" size="lg" href="#learn" icon={<GraduationCap className="h-4 w-4" />}>
                 Learn a song
               </Button>
             </div>
             <div className="mt-6 flex flex-wrap gap-2">
-              <Stat label="Keyboard" value="C4–C6" />
+              <Stat label="Keyboard" value="C4-C6" />
               <Stat label="Fingers" value="10" />
               <Stat label="Songs" value="17+" />
             </div>
@@ -311,7 +310,7 @@ export default function App() {
 
       {/* ------------------------------------------------- play + learn */}
       <section id="play" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-6">
-        <div className="grid gap-4 lg:grid-cols-[1.5fr_1fr]">
+        <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
           <div className="flex flex-col gap-4">
             <Stage
               canvasRef={canvasRef}
@@ -321,19 +320,9 @@ export default function App() {
               onStart={start}
               handsOn={handsOn}
             />
-            <Controls
-              position={position}
-              onPosition={changePosition}
-              showHands={showHands}
-              onShowHands={changeShowHands}
-              keyboard={keyboard}
-              onKeyboard={changeKeyboard}
-              volume={volume}
-              onVolume={changeVolume}
-            />
           </div>
 
-          <div id="learn" className="scroll-mt-24">
+          <div id="learn" className="flex flex-col gap-4 scroll-mt-24 lg:justify-between">
             <TutorPanel
               llm={llm}
               serverOK={serverOK}
@@ -354,6 +343,17 @@ export default function App() {
               onSkip={skip}
               onStop={stop}
             />
+
+            <Controls
+              position={position}
+              onPosition={changePosition}
+              showHands={showHands}
+              onShowHands={changeShowHands}
+              keyboard={keyboard}
+              onKeyboard={changeKeyboard}
+              volume={volume}
+              onVolume={changeVolume}
+            />
           </div>
         </div>
       </section>
@@ -370,16 +370,18 @@ export default function App() {
 
       {/* --------------------------------------------------------- help */}
       <section id="help" className="mx-auto max-w-6xl scroll-mt-24 px-4 pb-10">
-        <Card className="p-4 sm:p-5">
+        <Card accent="cobaltSoft" className="p-4 sm:p-5">
           <div className="flex items-center gap-2">
-            <Hand className="h-5 w-5" />
-            <SectionLabel>How to play</SectionLabel>
+            <HandPoint className="h-5 w-5" />
+            <SectionLabel>
+              <span className="text-card/75">How to play</span>
+            </SectionLabel>
           </div>
           <ul className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
             {TIPS.map((tip) => (
               <li key={tip} className="flex items-start gap-2">
-                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-coral" aria-hidden="true" />
-                <span className="text-ink/85">{tip}</span>
+                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-bright" aria-hidden="true" />
+                <span className="text-card/90">{tip}</span>
               </li>
             ))}
           </ul>
@@ -389,7 +391,7 @@ export default function App() {
               Computer keyboard
             </div>
             <p className="mt-1 text-sm text-ink/85">
-              Press <b>Start camera &amp; sound</b> first, then play with the keyboard — left
+              Press <b>Start camera &amp; sound</b> first, then play with the keyboard left
               hand on the bottom row, right hand on the home row. The letters are printed on
               the keys.
             </p>
@@ -408,8 +410,9 @@ export default function App() {
         </Card>
 
         <p className="mt-6 text-center text-xs text-muted">
-          Bipbop — a webcam piano and tutor. Built with React, Tailwind and MediaPipe.
+          Bipbop - a webcam piano and tutor.
         </p>
+        
       </section>
     </div>
   );

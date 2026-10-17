@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Bipbop — core logic (no DOM, no network, no audio device)
+   Bipbop - core logic (no DOM, no network, no audio device)
 
    Everything in here is pure or self-contained so it can be unit tested in
    Node as well as used by the browser app (app.js) and kept honest against
@@ -10,7 +10,7 @@ export const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A",
 export const WHITE_SEMITONES = new Set([0, 2, 4, 5, 7, 9, 11]);
 export const FINGERTIP_IDS = [4, 8, 12, 16, 20];
 
-// Interaction tuning — must match air_piano.py so both feel the same
+// Interaction tuning - must match air_piano.py so both feel the same
 export const TRIGGER_COOLDOWN = 0.05;   // seconds between note starts per finger
 export const RELEASE_SLACK_FRAC = 0.14; // release once this far outside the key
 export const HIT_INSET_FRAC = 0.04;     // must be this far inside the key to press

@@ -1,4 +1,4 @@
-/* Unit tests for web/piano-core.js — run from the project root:
+/* Unit tests for web/piano-core.js - run from the project root:
        node tests/test_core.mjs
    (or from anywhere: the import is relative to this file)  */
 import {
@@ -144,7 +144,7 @@ console.log("\n=== finger tracking: press, hold, release, and loudness ===");
   ok(!t.fingers.has("ptr7"), "pointer releases on pointerup");
 
   // a held computer key behaves like a held fingertip: it strikes once, counts
-  // as pressed (for the tutor's chords), and is not cleared by releaseStale —
+  // as pressed (for the tutor's chords), and is not cleared by releaseStale -
   // the keyboard releases it on its own keyup
   const t3 = new FingerTracker();
   t3.setKeys(keys);

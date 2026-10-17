@@ -11,6 +11,7 @@ const TONES = {
   mist: "bg-mist text-ink",
   coral: "bg-coral text-ink",
   cobalt: "bg-cobalt text-card",
+  cobaltSoft: "bg-cobalt-soft text-card",
   mint: "bg-mint text-ink",
   lavender: "bg-lavender text-ink",
   bright: "bg-bright text-ink",

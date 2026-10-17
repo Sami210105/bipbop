@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Web Audio piano synth — the same recipe as the desktop app.
+   Web Audio piano synth - the same recipe as the desktop app.
 
    Notes are rendered once into small AudioBuffers (a few decaying partials with
    a soft hammer bloom) and replayed through a gentle limiter, so ten-note

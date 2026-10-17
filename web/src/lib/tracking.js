@@ -17,7 +17,7 @@ export const MODEL_URL =
  * With no GPU, asking MediaPipe for the "GPU" delegate silently lands on a
  * software renderer (SwiftShader / llvmpipe), which is *slower* than the
  * CPU/WASM path. So probe once and choose deliberately. Returns true, false,
- * or null when the answer can't be determined — callers then assume "yes" so
+ * or null when the answer can't be determined - callers then assume "yes" so
  * the nicer delegate is kept on machines that hide the renderer string. */
 export function hasHardwareGPU() {
   try {
@@ -40,7 +40,7 @@ export async function loadHandLandmarker() {
     // @vite-ignore keeps Vite from trying to bundle this runtime CDN URL
     mp = await import(/* @vite-ignore */ `${MEDIAPIPE_CDN}/vision_bundle.mjs`);
   } catch {
-    throw new Error("Hand tracking could not load (offline?) — click the keys to play.");
+    throw new Error("Hand tracking could not load (offline?) - click the keys to play.");
   }
 
   const vision = await mp.FilesetResolver.forVisionTasks(`${MEDIAPIPE_CDN}/wasm`);
@@ -58,12 +58,12 @@ export async function loadHandLandmarker() {
     return { landmarker, delegate: gpu ? "gpu" : "cpu" };
   } catch {
     try {
-      // no usable GPU delegate after all — fall back to the CPU/WASM path
+      // no usable GPU delegate after all - fall back to the CPU/WASM path
       options.baseOptions = { modelAssetPath: MODEL_URL, delegate: "CPU" };
       const landmarker = await mp.HandLandmarker.createFromOptions(vision, options);
       return { landmarker, delegate: "cpu" };
     } catch {
-      throw new Error("Hand tracking could not start — click the keys to play.");
+      throw new Error("Hand tracking could not start - click the keys to play.");
     }
   }
 }

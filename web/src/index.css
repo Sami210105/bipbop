@@ -1,14 +1,14 @@
 @import "tailwindcss" source(none);
 
 /* Scan only the app's own source, never the build output (web/dist) or the
-   virtualenv — those live in the repo but contain no real class names, and
+   virtualenv - those live in the repo but contain no real class names, and
    letting Tailwind crawl them only inflates the stylesheet. */
 @source "../index.html";
 @source "./**/*.js";
 @source "./**/*.jsx";
 
 /* --------------------------------------------------------------------------
-   Bipbop — design tokens
+   Bipbop - design tokens
    A warm, paper-like canvas with bold coral / cobalt / mint / lavender /
    yellow accents and thick near-black outlines. Everything the UI needs is
    declared here so the JSX stays plain utility classes.
@@ -20,6 +20,7 @@
   --color-line: #292929;
   --color-coral: #ff796d;
   --color-cobalt: #3450c9;
+  --color-cobalt-soft: #677bd5;
   --color-mint: #a5e9d8;
   --color-lavender: #c9b7f4;
   --color-bright: #f9ef46;

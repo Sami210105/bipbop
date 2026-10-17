@@ -1,5 +1,5 @@
 """
-BIPBOP — play a virtual piano floating in the air with your fingertips.
+BIPBOP - play a virtual piano floating in the air with your fingertips.
 
 A webcam feed is shown mirrored, with two octaves of piano keys drawn over it.
 Hold your hands up to the camera and "press" the keys with your 10 fingertips.

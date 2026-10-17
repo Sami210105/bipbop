@@ -1,6 +1,6 @@
 /* The tutor card: look up or practise a song, one note at a time.
 
-   Logic is unchanged from before — only the presentation is restyled. */
+   Logic is unchanged from before - only the presentation is restyled. */
 
 import { useState } from "react";
 import { isWhite } from "../../piano-core.js";
@@ -130,7 +130,7 @@ export default function TutorPanel({
               <Target className="h-3.5 w-3.5" /> Play this
             </div>
             <div className="font-display text-2xl font-bold tracking-tight text-ink">
-              {step ? step.notes.join("  ") : "—"}
+              {step ? step.notes.join("  ") : "-"}
             </div>
           </div>
 
@@ -182,7 +182,7 @@ export default function TutorPanel({
 
           {score && (
             <div className="rounded-xl bg-mint/60 px-3 py-2 text-sm ink-border-thin">
-              🎉 <b>Song complete!</b> {score.total} notes, {score.misses} wrong, {score.accuracy}% accuracy.
+              <b>Song complete!</b> {score.total} notes, {score.misses} wrong, {score.accuracy}% accuracy.
             </div>
           )}
 
@@ -197,7 +197,7 @@ export default function TutorPanel({
 
       {!serverOK && (
         <p className="text-xs text-muted">
-          The song list needs the local server — run <code className="font-mono">serve.py</code>.
+          The song list needs the local server - run <code className="font-mono">serve.py</code>.
         </p>
       )}
     </Card>

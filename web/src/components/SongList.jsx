@@ -1,6 +1,6 @@
 /* The built-in song library: pick a tune to load into the tutor.
 
-   This is just the existing song selector given a roomier, editorial treatment —
+   This is just the existing song selector given a roomier, editorial treatment -
    a filterable list of rows, not a music-streaming shelf. */
 
 import { memo, useMemo, useState } from "react";
