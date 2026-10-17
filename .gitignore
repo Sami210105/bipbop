@@ -1,0 +1,42 @@
+# --------------------------------------------------------------- Python --
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+sdist/
+
+# the virtualenv holds the packages *and* the ~7.8 MB hand-tracking model,
+# both recreated on first run — never commit them
+.venv/
+venv/
+env/
+models/
+hand_landmarker.task
+
+# lookups cached from an AI model (regenerated on demand)
+.cache/
+
+# ------------------------------------------------------------ Node / Vite --
+node_modules/
+web/node_modules/
+web/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# ----------------------------------------------------- Editors and OS files --
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ------------------------------------------------------------ Local secrets --
+.env
+.env.*
+!.env.example
