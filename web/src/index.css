@@ -1,4 +1,11 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
+
+/* Scan only the app's own source, never the build output (web/dist) or the
+   virtualenv — those live in the repo but contain no real class names, and
+   letting Tailwind crawl them only inflates the stylesheet. */
+@source "../index.html";
+@source "./**/*.js";
+@source "./**/*.jsx";
 
 /* --------------------------------------------------------------------------
    Bipbop — design tokens
