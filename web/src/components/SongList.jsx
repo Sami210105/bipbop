@@ -1,4 +1,4 @@
-/* The built-in song library: pick a tune to load into the tutor.
+/* The song library: built-in tunes plus anything saved in songs/.
 
    This is just the existing song selector given a roomier, editorial treatment -
    a filterable list of rows, not a music-streaming shelf. */
@@ -12,6 +12,7 @@ const FILTERS = [
   { id: "beginner", label: "Beginner" },
   { id: "intermediate", label: "Intermediate" },
   { id: "exercise", label: "Exercises" },
+  { id: "saved", label: "Saved" },
 ];
 
 const tone = (difficulty) => (difficulty === "intermediate" ? "lavender" : "mint");
@@ -22,6 +23,7 @@ function SongList({ songs, serverOK, activeTitle, onSelect }) {
   const shown = useMemo(() => {
     if (filter === "all") return songs;
     if (filter === "exercise") return songs.filter((s) => /^Exercise:/i.test(s.title));
+    if (filter === "saved") return songs.filter((s) => s.source === "songbook");
     return songs.filter((s) => s.difficulty === filter);
   }, [songs, filter]);
 
@@ -31,7 +33,7 @@ function SongList({ songs, serverOK, activeTitle, onSelect }) {
         <div>
           <SectionLabel>Song library</SectionLabel>
           <h2 className="mt-1 font-display text-xl font-bold uppercase tracking-tight sm:text-2xl">
-            {songs.length ? `${songs.length} built-in songs` : "Built-in songs"}
+            {songs.length ? `${songs.length} songs` : "Built-in songs"}
           </h2>
         </div>
         <div className="flex flex-wrap gap-1.5">
@@ -85,8 +87,11 @@ function SongList({ songs, serverOK, activeTitle, onSelect }) {
                   <span className="block truncate font-display text-sm font-bold uppercase tracking-tight">
                     {s.title}
                   </span>
-                  <span className="mt-0.5 flex items-center gap-2 text-[11px] text-muted">
+                  <span className="mt-0.5 flex flex-wrap items-center gap-2 text-[11px] text-muted">
                     <Badge tone={tone(s.difficulty)} className="normal-case">{s.difficulty}</Badge>
+                    {s.source === "songbook" && (
+                      <Badge tone="cobaltSoft" className="normal-case">saved</Badge>
+                    )}
                     <span>{s.tempo} BPM</span>
                     <span>·</span>
                     <span>{s.length} notes</span>

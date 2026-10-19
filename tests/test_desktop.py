@@ -127,6 +127,18 @@ pc2.cycle_song(1)
 ok(pc2.lesson.title != first, f"cycle_song moved on from '{first}'")
 ok(pc2.learn_index == 0 and pc2.learn_misses == 0, "new song resets progress")
 
+print("\n=== every listed song loads, including ones saved in songs/ ===")
+listed = tutor.list_songs()
+bad = [s["title"] for s in listed if ap.lesson_for_listed_song(s["title"]) is None]
+ok(not bad, f"all {len(listed)} listed songs resolve to a lesson", bad[:3])
+pc3 = bare_piano(lesson)
+pc3._song_index = 0
+for _ in range(len(listed)):
+    pc3.cycle_song(1)
+    if pc3.lesson is None:
+        break
+ok(pc3.lesson is not None, "cycling the whole library never loses the lesson")
+
 print("\n=== demo playback plays every note ===")
 short = tutor.Lesson("Test", 300, "beginner",
                      [tutor.Step(["C4"], 1), tutor.Step(["D4"], 1), tutor.Step(["E4"], 1)])

@@ -96,6 +96,11 @@ export default function TutorPanel({
             <div className="min-w-0">
               <div className="truncate font-display text-lg font-bold uppercase tracking-tight">
                 {lesson.title}
+                {lesson.part && (
+                  <span className="ml-2 align-middle text-[11px] font-bold normal-case tracking-normal text-muted">
+                    {lesson.part}
+                  </span>
+                )}
               </div>
               <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-muted">
                 <Badge tone={lesson.difficulty === "intermediate" ? "lavender" : "mint"} className="normal-case">

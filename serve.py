@@ -14,7 +14,7 @@ Why a server at all? Two reasons:
     to be embedded in JavaScript where anyone could read it.
 
 API:
-    GET /api/songs                 -> built-in songs + whether AI lookup is on
+    GET /api/songs                 -> built-in and saved songs + whether AI lookup is on
     GET /api/lesson?title=NAME&refresh=1
                                    -> a lesson (built-in, cached, or via LLM)
 """
@@ -35,6 +35,21 @@ import tutor
 ROOT = os.path.dirname(os.path.abspath(__file__))
 WEB_SRC = os.path.join(ROOT, "web")        # the React/Vite project (source)
 WEB_DIR = os.path.join(WEB_SRC, "dist")    # the built app we actually serve
+
+
+class Server(ThreadingHTTPServer):
+    """Threaded server that stays quiet when a browser hangs up mid-reply.
+
+    A lookup can take a minute or two (a small local model especially), so it is
+    easy to abandon - reload the page, or ask for another song - and the browser
+    then closes the socket while the handler is still writing the answer. That
+    is normal, not a bug, so it should not dump a traceback into the console."""
+
+    def handle_error(self, request, client_address):
+        exc = sys.exc_info()[1]
+        if isinstance(exc, ConnectionError):  # aborted, reset, broken pipe
+            return
+        super().handle_error(request, client_address)
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -80,6 +95,8 @@ class Handler(SimpleHTTPRequestHandler):
             return self._json({"error": str(exc)}, 404)
         except Exception as exc:  # never take the page down over a bad lookup
             return self._json({"error": f"{type(exc).__name__}: {exc}"}, 500)
+        if lesson.source.startswith("llm:"):
+            print(f"  api looked up '{lesson.display}' with {lesson.source[4:]}")
         return self._json({"lesson": lesson.to_dict()})
 
     def end_headers(self):
@@ -109,7 +126,7 @@ def main(argv=None) -> int:
     server = None
     for candidate in range(port, port + 20):  # find a free port if it's taken
         try:
-            server = ThreadingHTTPServer((args.host, candidate), Handler)
+            server = Server((args.host, candidate), Handler)
             port = candidate
             break
         except OSError:
@@ -130,6 +147,10 @@ def main(argv=None) -> int:
     if status.get("local_only"):
         print("  note: only a local Ollama model is available; small models can get "
               "melodies wrong.")
+    if status["available"][:1] == ["ollama"]:
+        # load the weights now, so the first lookup is not slowed by a cold start
+        threading.Thread(target=tutor.preload_local_model, daemon=True).start()
+        print("  warming up the local model, so the first lookup is quick")
     print("  press Ctrl+C to stop")
 
     if not args.no_browser:

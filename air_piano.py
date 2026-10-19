@@ -444,6 +444,19 @@ HIT_INSET_FRAC = 0.04      # how far inside a key (fraction of its width) counts
 KEYBOARD_POSITIONS = ("center", "top", "bottom")
 
 
+def lesson_for_listed_song(title: str):
+    """The lesson behind a song-list entry: built-in or saved in songs/.
+
+    Never asks a model, so it is safe to call from the render loop. The song list
+    includes anything saved in songs/, which get_builtin() alone knows nothing
+    about (that would leave Learn mode with no song at all).
+    """
+    try:
+        return tutor.find_lesson(title, allow_llm=False)
+    except LookupError:
+        return None
+
+
 @dataclass
 class Finger:
     x: int = 0
@@ -531,12 +544,11 @@ class Bipbop:
         songs = tutor.list_songs()
         if songs:
             self._song_index = 0
-            self.set_lesson(tutor.get_builtin(songs[0]["title"]))
+            self.set_lesson(lesson_for_listed_song(songs[0]["title"]))
 
     def load_lesson(self, title: str, refresh: bool = False) -> bool:
-        """Fetch a lesson (built-in or via a free LLM) and make it current."""
-        builtin = tutor.get_builtin(title)
-        if builtin is None:
+        """Fetch a lesson (built-in, saved, cached, or via a free LLM)."""
+        if tutor.get_builtin(title) is None and tutor.get_songbook(title) is None:
             print(f"[tutor] looking up '{title}' ... "
                   f"(a local model can take a minute)")
         try:
@@ -545,7 +557,7 @@ class Bipbop:
             print(f"[tutor] {exc}")
             return False
         self.set_lesson(lesson)
-        print(f"[tutor] loaded '{lesson.title}' "
+        print(f"[tutor] loaded '{lesson.display}' "
               f"({lesson.length} notes, {lesson.tempo} BPM, {lesson.source})")
         return True
 
@@ -562,7 +574,7 @@ class Bipbop:
         if not songs:
             return
         self._song_index = (self._song_index + step) % len(songs)
-        self.set_lesson(tutor.get_builtin(songs[self._song_index]["title"]))
+        self.set_lesson(lesson_for_listed_song(songs[self._song_index]["title"]))
 
     def _step(self):
         if not self.lesson:
@@ -853,7 +865,7 @@ class Bipbop:
         total = len(self.lesson.steps)
         next_txt = " ".join(step.notes) if step else "-"
         lines = [
-            (f"LEARN: {self.lesson.title}", (0, 255, 200)),
+            (f"LEARN: {self.lesson.display}", (0, 255, 200)),
             (f"{self.lesson.difficulty}  {self.lesson.tempo} BPM   "
              f"note {min(self.learn_index + 1, total)}/{total}", (230, 230, 230)),
             (f"next: {next_txt}", (0, 210, 255)),
@@ -1025,7 +1037,7 @@ class Bipbop:
                     else:
                         self.cycle_song(-1 if key == ord("[") else 1)
                     if self.lesson:
-                        print(f"[tutor] song: {self.lesson.title}")
+                        print(f"[tutor] song: {self.lesson.display}")
                 elif key == ord("d"):
                     self.learn_demo()
                 elif key == ord("r"):
@@ -1078,7 +1090,7 @@ def main():
                     help="learn this song (built-in name, or any name to look up "
                          "with a free LLM). Implies Learn mode.")
     ap.add_argument("--list-songs", action="store_true",
-                    help="list the built-in songs and exit")
+                    help="list the built-in and saved songs, and exit")
     args = ap.parse_args()
 
     if args.list_audio:
@@ -1087,11 +1099,13 @@ def main():
 
     if args.list_songs:
         for s in tutor.list_songs():
+            tag = "  (saved)" if s["source"] == "songbook" else ""
             print(f"  {s['title']:34} {s['difficulty']:13} {s['tempo']:3} BPM  "
-                  f"{s['length']:2} notes")
+                  f"{s['length']:2} notes{tag}")
         status = tutor.llm_status()
         if status["enabled"]:
             print(f"\n  AI song lookup ready via: {', '.join(status['available'])}")
+            print(f"    {status['hint']}")
         else:
             print(f"\n  AI song lookup: {status['hint']}")
         return
@@ -1117,7 +1131,7 @@ def main():
         piano.load_default_song()
     if piano.learn:
         if piano.lesson:
-            print(f"Learn mode: '{piano.lesson.title}' "
+            print(f"Learn mode: '{piano.lesson.display}' "
                   f"({piano.lesson.length} notes). Press d to hear it, then play along.")
             print("  keys: r restart  d hear it  [ ] change song  k skip  l exit learn mode")
         print("  tip: type any song name here and press Enter to load it (AI lookup).")

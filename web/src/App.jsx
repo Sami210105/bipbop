@@ -157,7 +157,11 @@ export default function App() {
         setScore(null);
         applyGuide();
         setVersion((v) => v + 1);
-        setMessage({ text: `Loaded “${lesson.title}”. Press Practice, or Listen first.`, kind: "ok" });
+        setMessage({
+          text: `Loaded “${lesson.title}”${lesson.part ? ` (${lesson.part})` : ""}. `
+                + "Press Practice, or Listen first.",
+          kind: "ok",
+        });
       } catch (err) {
         setMessage({ text: err.message, kind: "error" });
       } finally {
